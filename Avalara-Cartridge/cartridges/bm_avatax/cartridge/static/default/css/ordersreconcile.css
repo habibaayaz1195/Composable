@@ -1,0 +1,107 @@
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+.order-check-header {
+    cursor: pointer;
+}
+
+td.td-order-number {
+    font-weight: bold;
+}
+
+.button {
+    font-weight: bold;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .8) url(${loaderimgurl}) 50% 50% no-repeat;
+}
+
+#grey-area {
+    background-color: grey;
+    margin: 4px;
+}
+
+#site-info {
+    padding: 8px;
+}
+
+#selection-criteria {
+    padding-left: 15px;
+}
+
+#count-report {
+    float: right;
+    margin-right: 43px;
+    margin-top: -171px;
+}
+
+#av-data-table {
+    border-color: black;
+}
+
+th.table-header-orange {
+    color: #ec890e;
+}
+
+#ok-img, #err-img {
+    display: none;
+    margin-left: 5px;
+}
+
+#ok-img img, #err-img img {
+    width: 15px;
+}
+
+.message-no-orders {
+    margin: 15px;
+}
+
+#data-table .button {
+    float: right;
+    margin: 10;
+    width: 110px;
+}
+
+#no-save-selected-dialog {
+    display: none;
+    height: 70px;
+}
+
+#no-orders-selected-dialog {
+    display: none;
+    height: 70px;
+}
+
+#reconcile-dialog-confirm {
+    display: none;
+}
+
+#display-all-orders-dialog {
+    display: none;
+}
+
+#no-orders-verify-selected-dialog {
+    display: none;
+    height: 70px;
+}
+
+#verify-dialog-confirm {
+    display: none;
+}

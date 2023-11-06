@@ -1,0 +1,567 @@
+<!--- TEMPLATENAME: test.isml --->
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>${Resource.msg('page.setting.title', 'avatax_constant', null)}</title>
+
+	<link rel="stylesheet" href="${URLUtils.staticURL('/css/settings.css')}">
+	<link rel="stylesheet"
+		href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+
+	<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+
+	<isset name="loaderimgurl" value="${URLUtils.staticURL('/images/loader.gif')}" scope="page" />
+	<isset name="closeimgurl" value="${URLUtils.staticURL('/images/close-icon.png')}" scope="page" />
+</head>
+
+<isdecorate template="application/MenuFrame">
+	<iscontent type="text/html" charset="UTF-8" />
+	<isinclude template="inc/Modules" />
+
+	<isset name="TOP_URL"
+		value="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', pdict.CurrentMenuItemId)}"
+		scope="page" />
+	<isbreadcrumb name1="${pdict.mainmenuname}" url1="${TOP_URL}" name2="${pdict.menuname}" />
+
+	<div id="main-pane" class="main-pane" data-ajax="false" data-img="${URLUtils.staticURL('/icons/spinner.gif')}">
+
+		<!-- errors -->
+		<isif condition="${pdict.errormsg}">
+			<!-- or any other useful error condition -->
+			<table border="0" cellspacing="0" cellpadding="4" width="100%" class="error_box n s e w">
+				<tr valign="top">
+					<td class="error_icon top e">
+						<img src="${URLUtils.webRoot()}/images/error.gif" width="16" height="15" alt="" border="0" />
+					</td>
+					<td class="error top" width="100%">
+						<p>
+							${Resource.msg('label.error', 'avatax_constant', null)}
+							<isprint value="${pdict.errormsg}" />
+							<br />
+						</p>
+					</td>
+				</tr>
+			</table>
+		</isif>
+
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td width="100%" class="w e s table_title">${Resource.msg('page.setting.header', 'avatax_constant', null)}</td>
+			</tr>
+
+			<tr>
+				<td class="w e s">
+					<img src="/on/demandware.static/Sites-Site/-/default/vbb6ced9dcf76be8340a5f0be590d1bfce47e377f/images/space.gif"
+						width="1" height="2" alt="" border="0">
+				</td>
+			</tr>
+
+			<tr>
+				<td valign="top" class="table_title_description w e s">
+					<p>${Resource.msg('page.setting.header.description.d1', 'avatax_constant', null)}</p>
+					<p>${Resource.msg('page.setting.header.description.d2', 'avatax_constant', null)}</p>
+					<p>
+						${Resource.msg('page.setting.header.description.d3', 'avatax_constant', null)} <b>${Resource.msg('page.setting.header.description.save', 'avatax_constant', null)}</b>.
+					</p>
+					<p>
+						${Resource.msg('page.setting.header.description.d4', 'avatax_constant', null)} <b>${Resource.msg('page.setting.header.description.reset', 'avatax_constant', null)}</b>.
+					</p>
+				</td>
+			</tr>
+		</table>
+
+		<div id="tabs" class="tabs">
+			<ul>
+				<li>
+					<a href="#settings-div">
+						<span>${Resource.msg('page.setting.tab.title.setting', 'avatax_constant', null)}</span>
+					</a>
+				</li>
+				<li>
+					<a href="#fragment-3">
+						<span>${Resource.msg('page.setting.tab.title.services', 'avatax_constant', null)}</span>
+					</a>
+				</li>
+			</ul>
+
+			<div id="settings-div">
+				<form id="settings-form" class="settings-form form" data-url="${URLUtils.url('AVSettings-Save')}">
+					<table id="main-table" class="main-table" cellspacing="25" cellpadding="3" width="600px">
+						<colgroup>
+							<col id="dw-gridcolumn-61"/>
+							<col id="dw-gridcolumn-59"/>
+						</colgroup>
+
+						<tbody>
+							<iscomment> Section: Avatax Options </iscomment>
+							<tr class="dw-body-row section-background">
+								<td class="dw-body section-inner-text" colspan="4">
+									<div>
+										<p class='section-inner-text-header'>${Resource.msg('page.setting.sub_section_1.title', 'avatax_constant', null)}</p>
+										<p>${Resource.msg('page.setting.sub_section_1.d1', 'avatax_constant', null)}</p>
+										<p>${Resource.msg('page.setting.sub_section_1.d2', 'avatax_constant', null)}</p>
+										<p><a href="${URLUtils.staticURL('/avataxObjectMapping.html')}" target="_blank">${Resource.msg('page.setting.sub_section_1.d3', 'avatax_constant', null)}</a></p>
+									</div>
+								</td>
+							</tr>
+							<iscomment> Tax Calculation </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="When selected, this will enable AvaTax tax calculation on transactions.">
+											${Resource.msg('page.setting.input.taxcalculation', 'avatax_constant', null)}
+										</span>
+									</div>
+								</td>
+								<td>
+									<select id="select-taxcalculation" class="select-taxcalculation">
+										<option value="true" <isprint value="${pdict.settings.taxCalculation ? 'selected=selected' : ''}"> >
+											${Resource.msg('page.setting.input_option.enabled', 'avatax_constant', null)}
+										</option>
+										<option value="false" <isprint value="${pdict.settings.taxCalculation ? '' : 'selected=selected'}"> >
+											${Resource.msg('page.setting.input_option.disabled', 'avatax_constant', null)}
+										</option>
+									</select>
+								</td>
+							</tr>
+							<iscomment> Address Validation </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="When selected, this will enable shipping address validation during checkout on the storefront. AvaTax only validates addresses in the United States and Canada.">
+											${Resource.msg('page.setting.input.addressvalidation', 'avatax_constant', null)}
+										</span>
+									</div>
+								</td>
+								<td>
+									<select id="select-addressvalidation" class="select-addressvalidation">
+										<option value="true" <isprint value="${pdict.settings.addressValidation ? 'selected=selected' : ''}"> >
+											${Resource.msg('page.setting.input_option.enabled', 'avatax_constant', null)}
+										</option>
+										<option value="false" <isprint value="${pdict.settings.addressValidation ? '' : 'selected=selected'}"> >
+											${Resource.msg('page.setting.input_option.disabled', 'avatax_constant', null)}
+										</option>
+									</select>
+								</td>
+							</tr>
+							<iscomment> Save Transaction to Avatax </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="When selected, this will save all orders to AvaTax. When set to 'Disabled', orders will not be saved to AvaTax, and so operations such as voiding or modifying the transaction will not be available.">
+											${Resource.msg('page.setting.input.savetransaction', 'avatax_constant', null)}
+										</span>
+									</div>
+								</td>
+								<td>
+									<select id="select-savetransactions" class="select-savetransactions">
+										<option value="true" <isprint value="${pdict.settings.saveTransactions ? 'selected=selected' : ''}"> >
+											${Resource.msg('page.setting.input_option.enabled', 'avatax_constant', null)}
+										</option>
+										<option value="false" <isprint value="${pdict.settings.saveTransactions ? '' : 'selected=selected'}"> >
+											${Resource.msg('page.setting.input_option.disabled', 'avatax_constant', null)}
+										</option>
+									</select>
+								</td>
+							</tr>
+							<iscomment> Commit Transaction to Avatax </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="If enabled, successful orders on the storefront will be marked 'Committed' when posting to AvaTax.">
+											${Resource.msg('page.setting.input.committransaction', 'avatax_constant', null)}
+										</span>
+									</div>
+								</td>
+								<td>
+									<select id="select-committransactions" class="select-committransactions">
+										<option value="true" <isprint value="${pdict.settings.commitTransactions ? 'selected=selected' : ''}"> >
+											${Resource.msg('page.setting.input_option.enabled', 'avatax_constant', null)}
+										</option>
+										<option value="false" <isprint value="${pdict.settings.commitTransactions ? '' : 'selected=selected'}"> >
+											${Resource.msg('page.setting.input_option.disabled', 'avatax_constant', null)}
+										</option>
+									</select>
+								</td>
+							</tr>
+							<iscomment> Company Code </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="AvaTax company code configured on the admin console of the AvaTax account.">
+											${Resource.msg('page.setting.input.companycode', 'avatax_constant', null)}
+										</span>
+									</div>
+								</td>
+								<td>
+									<input id="company-code" type="text"
+										placeholder="AvaTax company code. Default value - 'default'."
+										value="${pdict.settings.companyCode}" />
+								</td>
+							</tr>
+							<iscomment> Customer Code </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="Select what value is sent as the customer code for authenticated customers. For guest customers, Email ID entered during checkout is used.">
+											${Resource.msg('page.setting.input.customercode', 'avatax_constant', null)}
+										</span>
+									</div>
+								</td>
+								<td>
+									<div class='td-container'>
+										<select id="select-use-custom-customercode" class="select-usecustomcustomercode">
+											<option value='customer_number' <isprint
+												value="${pdict.settings.useCustomCustomerCode == 'customer_number' ? 'selected=selected' : ''}">
+												>${Resource.msg('page.setting.input.customercode.customernumber', 'avatax_constant', null)}</option>
+											<option value="customer_email" <isprint
+												value="${pdict.settings.useCustomCustomerCode == 'customer_email' ? 'selected=selected' : ''}">
+												>${Resource.msg('page.setting.input.customercode.customeremail', 'avatax_constant', null)}</option>
+											<option value="custom_attribute" <isprint
+												value="${pdict.settings.useCustomCustomerCode == 'custom_attribute' ? 'selected=selected' : ''}">
+												>${Resource.msg('page.setting.input.customercode.other', 'avatax_constant', null)}</option>
+										</select>
+										<br />
+										<span>
+											<input class='ip-field' id='custom-attr-ip-field' type="text"
+												placeholder="e.g. taxID or custom.taxID" value="${pdict.settings.useCustomCustomerCode != 'custom_attribute' ? '' :pdict.settings.customCustomerAttribute}" <isprint
+												value="${pdict.settings.useCustomCustomerCode != 'custom_attribute' ? 'disabled=disabled' : ''}" />
+											/> </span>
+
+									</div>
+								</td>
+							</tr>
+							<iscomment> Shipping Tax Code </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="This tax code will be used to calculate taxes for shipping methods. If not specified, frieght code 'FR' will be used.">
+											${Resource.msg('page.setting.input.shippingtaxcode', 'avatax_constant', null)}
+										</span>
+									</div>
+
+								</td>
+								<td>
+									<input id="defult-shipping-tax-code" type="text"
+										placeholder="Shipping method tax code. Default value - 'FR'."
+										value="${pdict.settings.defaultShippingMethodTaxCode}" />
+								</td>
+							</tr>
+
+							<iscomment> Section: Cross Border Calculation </iscomment>
+							<tr class="dw-body-row section-background">
+								<td class="dw-body section-inner-text" colspan="4">
+									<div>
+										<p class='section-inner-text-header'>
+											${Resource.msg('page.setting.sub_section_2.title', 'avatax_constant', null)}
+										</p>
+										<p>${Resource.msg('page.setting.sub_section_2.info', 'avatax_constant', null)}</p>
+									</div>
+								</td>
+							</tr>
+							<iscomment> Taxation Policy </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class='input-label'
+											title="Cross border calculation only work if the Taxation Policy of the site is set to 'Net'.">
+											${Resource.msg('page.setting.input.taxationpolicy', 'avatax_constant', null)}
+											<span class='taxationpolicy-info'>
+												${Resource.msg('page.setting.input.taxationpolicy_info', 'avatax_constant', null)}
+											</span>
+										</span>
+									</div>
+								</td>
+								<td>
+									<div>
+										<select disabled title="Value derived from current site settings"
+											id="select-taxationpolicy" class="select-taxationpolicy">
+											<option value="net" <isprint value="${dw.order.TaxMgr.taxationPolicy === dw.order.TaxMgr.TAX_POLICY_NET ? 'selected=selected' : ''}">>
+												${Resource.msg('page.setting.input.taxationpolicy_net', 'avatax_constant', null)}
+											</option>
+											<option value="gross" <isprint value="${dw.order.TaxMgr.taxationPolicy === dw.order.TaxMgr.TAX_POLICY_NET ? '' : 'selected=selected'}">>
+												${Resource.msg('page.setting.input.taxationpolicy_gross', 'avatax_constant', null)}
+											</option>
+										</select>
+										<br>
+										<isif condition="${dw.order.TaxMgr.taxationPolicy === dw.order.TaxMgr.TAX_POLICY_GROSS}">
+											<span class='taxationpolicy-gross-warning'>
+												${Resource.msg('page.setting.input.taxationpolicy_gross_warning', 'avatax_constant', null)}
+											</span>
+										</isif>
+									</div>
+								</td>
+							</tr>
+							<iscomment> Section: Address Details </iscomment>
+							<tr class="dw-body-row section-background">
+								<td class="dw-body section-inner-text" colspan="4">
+									<div>
+										<p class='section-inner-text-header'>
+											${Resource.msg('page.setting.sub_section_3.title', 'avatax_constant', null)}
+										</p>
+										<p>${Resource.msg('page.setting.sub_section_3.info_1', 'avatax_constant', null)}</p>
+										<p>${Resource.msg('page.setting.sub_section_3.info_2', 'avatax_constant', null)}</p>
+									</div>
+								</td>
+							</tr>
+							<iscomment> Location Code </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.locationcode', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-location-code" type="text" placeholder="Location code" value="${pdict.settings.locationCode}" />
+								</td>
+							</tr>
+							<iscomment> Address Line 1 </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.addressline1', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-line1" type="text" placeholder="Line 1" title="" value="${pdict.settings.line1}" />
+								</td>
+							</tr>
+							<iscomment> Address Line 2 </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.addressline2', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-line2" type="text" placeholder="Line 2" title="" value="${pdict.settings.line2}" />
+								</td>
+							</tr>
+							<iscomment> Address Line 3 </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.addressline3', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-line3" type="text" placeholder="Line 3" title="" value="${pdict.settings.line3}" />
+								</td>
+							</tr>
+							<iscomment> City </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.city', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-city" type="text" placeholder="City" title="" value="${pdict.settings.city}" />
+								</td>
+							</tr>
+							<iscomment> State </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.State', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-state" type="text" placeholder="State" title="" value="${pdict.settings.state}" />
+								</td>
+							</tr>
+							<iscomment> Zip / Postal Code </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.zip', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="address-zipcode" type="text" placeholder="ZIP/PostalCode" title="" value="${pdict.settings.zipCode}" />
+								</td>
+							</tr>
+							<iscomment> Country Code </iscomment>
+							<tr>
+								<td>
+									<div>
+										<span class=''>${Resource.msg('page.setting.input.countrycode', 'avatax_constant', null)}</span>
+									</div>
+								</td>
+								<td>
+									<input id="input-countrycode" class="input-countrycode" type="text" maxlength="3" placeholder="Country" title="" value="${pdict.settings.countryCode}" />
+								
+								</td>
+							</tr>
+							<iscomment> Action: Validate Address </iscomment>
+							<tr>
+								<td colspan='2'>
+									<a href="javascript:void(0)" id="validate-address-btn" class="validate-address-btn" data-url="${URLUtils.https('AVSettings-ValidateShipfromAddress')}">
+										<div>
+											${Resource.msg('page.setting.action.validateaddress', 'avatax_constant', null)}
+										</div>
+									</a>
+								</td>
+							</tr>
+								
+							<iscomment> Action: Save and Reset </iscomment>
+							<tr class='action-row'>
+								<td colspan='2'>
+
+									<p class="msg" id="msg"></p>
+									<button type="submit" name="Save" id="submit-btn" class="button submit-btn" value="Save">
+										${Resource.msg('page.setting.action.save', 'avatax_constant', null)}
+									</button>
+									<button type="button" name="Reset" id="reset-btn" class="button reset-btn" value="Reset">
+										${Resource.msg('page.setting.action.reset', 'avatax_constant', null)}
+									</button>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</form>
+			</div>
+
+			<iscomment> Test service section </iscomment>
+			<div id="fragment-3">
+				<table id="test-services-table" class="test-services-table" cellspacing="25" cellpadding="3"
+					width="600px">
+					<colgroup>
+						<col id="dw-gridcolumn-61"/>
+						<col id="dw-gridcolumn-59"/>
+						<col id="dw-gridcolumn-61"/>
+					</colgroup>
+
+					<tbody>
+						<tr class="dw-body-row section-background">
+							<td class="dw-body section-inner-text" colspan="4">
+								<div>
+									<p>
+										${Resource.msg('page.setting.section_testcon.info_1', 'avatax_constant', null)} <b>${Resource.msg('page.setting.section_testcon.info_2', 'avatax_constant', null)}</b> ${Resource.msg('page.setting.section_testcon.info_3', 'avatax_constant', null)} <i>${Resource.msg('page.setting.section_testcon.info_4', 'avatax_constant', null)}</i>
+									</p>
+									<p>${Resource.msg('page.setting.section_testcon.info_5', 'avatax_constant', null)}</p>
+								</div>
+							</td>
+						</tr>
+						<iscomment> Action: Test Connection </iscomment>
+						<tr>
+							<td colspan='3'>
+								<button type="button"
+									name="Test Connection" id="test-con-btn" class="button test-con-btn"
+									value="Test Connection" data-url="${URLUtils.https('AVSettings-GetSubscriptions')}">
+										${Resource.msg('page.setting.action.testcon', 'avatax_constant', null)}
+									</button>
+
+								<p id="message" class="message"></p>
+							</td>
+						</tr>
+						<iscomment> Void Transaction </iscomment>
+						<tr>
+							<td>
+								<div>
+									<span class='input-label' title="Voids a transaction in AvaTax">
+										${Resource.msg('page.setting.input.voidtransaction', 'avatax_constant', null)}
+									</span>
+								</div>
+							</td>
+							<td>
+								<input type="text" name="order-no" id="void-order-no" class="void-order-no" placeholder="Order No." />
+							</td>
+							<td>
+								<button type="button"
+									name="Void" id="void-btn" class="button void-btn" value="Void"
+									data-url="${URLUtils.https('AVSettings-Void')}">
+									${Resource.msg('page.setting.action.voidtransaction', 'avatax_constant', null)}
+								</button>
+
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div>
+									<span class='input-label' title="Commits a transaction in AvaTax">
+										${Resource.msg('page.setting.input.committransaction', 'avatax_constant', null)}
+									</span>
+								</div>
+							</td>
+							<td>
+								<input type="text" name="order-no" id="commit-order-no" class="commit-order-no" placeholder="Order No." />
+							</td>
+							<td>
+								<button type="button"
+									name="Commit" id="commit-btn" class="button commit-btn" value="Commit"
+									data-url="${URLUtils.https('AVSettings-Commit')}">
+									${Resource.msg('page.setting.action.committransaction', 'avatax_constant', null)}
+								</button>
+
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div>
+									<span class='input-label' title="Validates the shipping address of the order">
+										${Resource.msg('page.setting.input.addressvalidation', 'avatax_constant', null)}
+									</span>
+								</div>
+							</td>
+							<td>
+								<input type="text" name="order-no" id="validate-order-no" class="validate-order-no"
+									placeholder="Order No." />
+							</td>
+							<td>
+								<button type="button"
+									name="Validate" id="validate-btn" class="button validate-btn" value="Validate"
+									data-url="${URLUtils.https('AVSettings-Validate')}">
+									${Resource.msg('page.setting.action.validate', 'avatax_constant', null)}
+								</button>
+
+							</td>
+						</tr>
+						<tr>
+							<td colspan='3'>
+								<p id="transaction-msg" class="transaction-msg">
+									${Resource.msg('page.setting.section_testcon.action_info', 'avatax_constant', null)}
+								</p>
+
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>${Resource.msg('page.setting.input.serviceresponse', 'avatax_constant', null)}</span>
+							</td>
+							<td colspan='2'>
+								<textarea id="response-json">
+                        		</textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div id="dummy-div">
+		<!-- Placeholder -->
+	</div>
+
+
+</isdecorate>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.7/loadingoverlay.min.js"
+	integrity="sha512-hktawXAt9BdIaDoaO9DlLp6LYhbHMi5A36LcXQeHgVKUH6kJMOQsAtIw2kmQ9RERDpnSTlafajo6USh9JUXckw=="
+	crossorigin="anonymous"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="${URLUtils.staticURL('js/loadingoverlay.min.js')}"></script>
+<script src="${URLUtils.staticURL('/js/jquery-ui.min.js')}"></script>
+<script src="${URLUtils.staticURL('/js/notify.min.js')}"></script>
+<script src="${URLUtils.staticURL('/js/settingsui.js')}"></script>

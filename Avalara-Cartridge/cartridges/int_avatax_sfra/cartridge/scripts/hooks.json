@@ -1,0 +1,28 @@
+{
+	"hooks": [
+		{
+			"name": "dw.order.calculateTax",
+			"script": "./hooks/avatax/avataxhooks.js"
+		},
+		{
+			"name": "dw.ocapi.shop.basket.items.validateShippingAddress",
+			"script": "./hooks/avatax/avataxhooks.js"
+		},
+		{
+			"name": "dw.order.createOrderNo",
+			"script": "./hooks/avatax/avataxhooks.js"
+		},
+		{
+			"name": "app.custom.bevAlc.shipment.reverify",
+			"script": "./hooks/avatax/avataxhooks.js"
+		},
+		{
+			"name": "app.custom.bevAlc.shipment.cancelOrDeleteShipment",
+			"script": "./hooks/avatax/avataxhooks.js"
+		},
+		{
+			"name": "app.custom.bevAlc.fetchBevAlcConfiguration",
+			"script": "./hooks/avatax/avataxhooks.js"
+		}
+	]
+}

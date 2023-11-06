@@ -1,0 +1,34 @@
+{
+    "merchantId-1": {
+        "parameters": [
+            {
+                "name": "MerchantEstablishmentCountry",
+                "value": ""
+            },
+            {
+                "name": "MerchantName",
+                "value": ""
+            },
+            {
+                "name": "MerchantVatId",
+                "value": ""
+            }
+        ]
+    },
+    "merchantId-2": {
+        "parameters": [
+            {
+                "name": "MerchantEstablishmentCountry",
+                "value": ""
+            },
+            {
+                "name": "MerchantName",
+                "value": ""
+            },
+            {
+                "name": "MerchantVatId",
+                "value": ""
+            }
+        ]
+    }
+}

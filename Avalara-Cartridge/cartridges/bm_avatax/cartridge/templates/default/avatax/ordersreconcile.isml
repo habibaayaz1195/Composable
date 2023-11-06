@@ -1,0 +1,372 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>${Resource.msg('page.reconcile.title', 'avatax_constant', null)}</title>
+
+    <link rel="stylesheet" href="${URLUtils.staticURL('/DataTables/datatables.min.css')}">
+    <link rel="stylesheet" href="${URLUtils.staticURL('/DataTables/buttons.datatables.min.css')}">
+    <link rel="stylesheet" href="${URLUtils.staticURL('/css/ordersreconcile.css')}">
+
+    <script src="${URLUtils.staticURL('/js/jquery-3.3.1.min.js')}"></script>
+
+    <link rel="stylesheet"
+        href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+
+    <isset name="loaderimgurl" value="${URLUtils.staticURL('/images/loader.gif')}" scope="page" />
+    <isset name="closeimgurl" value="${URLUtils.staticURL('/images/close-icon.png')}" scope="page" />
+</head>
+
+<isdecorate template="application/MenuFrame">
+
+    <iscontent type="text/html" charset="UTF-8" />
+    <isinclude template="inc/Modules" />
+
+    <isset name="TOP_URL"
+        value="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', pdict.CurrentMenuItemId)}"
+        scope="page" />
+
+    <isbreadcrumb name1="${pdict.mainmenuname}" url1="${TOP_URL}" name2="${pdict.menuname}" />
+
+    <div id="main-pane" data-ajax="false">
+
+        <iscomment> errors </iscomment>
+        <isif condition="${pdict.errormsg}">
+            <iscomment> or any other useful error condition </iscomment>
+            <table border="0" cellspacing="0" cellpadding="4" width="100%" class="error_box n s e w">
+                <tr valign="top">
+                    <td class="error_icon top e">
+                        <img src="${URLUtils.webRoot()}/images/error.gif" width="16" height="15" alt="" border="0" />
+                    </td>
+                    <td class="error top" width="100%">
+                        <p>${Resource.msg('label.error', 'avatax_constant', null)} <isprint value="${pdict.errormsg}">
+                        </p>
+                        <br />
+                    </td>
+                </tr>
+            </table>
+        </isif>
+
+        <iscomment> Page Header </iscomment>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td width="100%" class="w e s table_title">
+                    ${Resource.msg('page.reconcile.header', 'avatax_constant', null)}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="w e s">
+                    <img src="/on/demandware.static/Sites-Site/-/default/vbb6ced9dcf76be8340a5f0be590d1bfce47e377f/images/space.gif"
+                        width="1" height="2" alt="" border="0" />
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="top" class="table_title_description w e s">
+
+                    <p>${Resource.msg('page.reconcile.header.description.d1', 'avatax_constant', null)}</p>
+                    <p>${Resource.msg('page.reconcile.header.description.d2', 'avatax_constant', null)}</p>
+                    <p>
+                        <b>${Resource.msg('page.reconcile.header.description.note', 'avatax_constant', null)}</b> ${Resource.msg('page.reconcile.header.description.d3', 'avatax_constant', null)}
+                    </p>
+                    <p>${Resource.msg('page.reconcile.header.description.d4', 'avatax_constant', null)} <b>${Resource.msg('page.reconcile.header.description.reconcile', 'avatax_constant', null)}</b>.</p>
+                </td>
+            </tr>
+        </table>
+
+        <iscomment> Filter Section </iscomment>
+        <div id="grey-area">
+            <iscomment> Site Info Section </iscomment>
+            <div id="site-info" class="infobox">
+                <table class="infobox" cellpadding="4">
+                    <tbody>
+                        <tr>
+                            <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.sitename', 'avatax_constant', null)}</td>
+                            <td>${pdict.siteInfo != null ? pdict.siteInfo.siteName : dw.system.Site.current.name}
+                                (${pdict.siteInfo != null ? pdict.siteInfo.siteId : dw.system.Site.current.ID})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.taxcacluation', 'avatax_constant', null)}</td>
+                            <td>${pdict.settingsObject.taxCalculation ? 'Enabled' : 'Disabled'}</td>
+                        </tr>
+                        <tr>
+                            <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.companycode', 'avatax_constant', null)}</td>
+                            <td>${pdict.settingsObject.companyCode ? pdict.settingsObject.companyCode : 'default'}</td>
+                        </tr>
+                        <tr>
+                            <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.savetransactions', 'avatax_constant', null)}</td>
+                            <td>${pdict.settingsObject.saveTransactions ? 'Enabled' : 'Disabled'}</td>
+                        </tr>
+                        <tr>
+                            <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.committransactions', 'avatax_constant', null)}</td>
+                            <td>${pdict.settingsObject.commitTransactions ? 'Enabled' : 'Disabled'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <iscomment> Date Selection Section </iscomment>
+            <div id="selection-criteria" class="selection-criteria infobox"
+                data-submit-method="${URLUtils.https('AvataxBM-GetOrders').toString()}">
+
+                <table id="selection-criteria-table" cellpadding="5">
+                    <tr>
+                        <td colspan="2" class="infobox_title top">
+                            <u>${Resource.msg('page.reconcile.infobox.selectdate', 'avatax_constant', null)}</u>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.selectdate.from', 'avatax_constant', null)}</td>
+                        <td>
+                            <input type="text" name="fromdate" id="fromdate" placeholder="mm/dd/yyyy"
+                                value="${!empty(session.privacy.fromdate) ? session.privacy.fromdate : ''}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.selectdate.to', 'avatax_constant', null)}</td>
+                        <td>
+                            <input type="text" name="todate" id="todate" placeholder="mm/dd/yyyy"
+                                value="${!empty(session.privacy.todate) ? session.privacy.todate : ''}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="button" id="search-orders" class="button search-orders" value="Fetch Orders">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="infobox_title top">${Resource.msg('page.reconcile.infobox.numberoforders', 'avatax_constant', null)}</td>
+                        <td>
+                            <span id="orders-total">${pdict.orders != null ? pdict.orders.length : 'None'}</span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <iscomment> Count Report Section </iscomment>
+            <div id="count-report">
+                <isif condition="${pdict.countReport != null}">
+                    <table id="count-report-table" cellpadding="2">
+                        <tr>
+                            <td class="table_header w e s" colspan="2">${Resource.msg('page.reconcile.countreport.title', 'avatax_constant', null)}</td>
+                        </tr>
+                        <tr>
+                            <td>${Resource.msg('page.reconcile.countreport.amtortaxmismatch', 'avatax_constant', null)}</td>
+                            <td id="amtortax-mismatch">
+                                ${Number.parseInt(pdict.countReport.amountOrTaxMisMatchCount).toFixed(0)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>${Resource.msg('page.reconcile.countreport.missinginavatax', 'avatax_constant', null)}</td>
+                            <td id="av-mis">
+                                ${Number.parseInt(pdict.countReport.missingInAvaTaxCount).toFixed(0)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>${Resource.msg('page.reconcile.countreport.missinginb2c', 'avatax_constant', null)}</td>
+                            <td id="sfcc-mis">
+                                ${Number.parseInt(pdict.countReport.missingInSFCCCount).toFixed(0)}
+                            </td>
+                        </tr>
+                        <isif condition="${pdict.isBevAlcEnabled == true}">
+                            <tr>
+                                <td>${Resource.msg('page.reconcile.countreport.noncompliant', 'avatax_constant', null)}</td>
+                                <td id="non-comp">
+                                    ${Number.parseInt(pdict.countReport.nonCompliantCount).toFixed(0)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>${Resource.msg('page.reconcile.countreport.compliant_cancelled', 'avatax_constant', null)}</td>
+                                <td id="comp-cancelled">
+                                    ${Number.parseInt(pdict.countReport.cancelledCompliantCount).toFixed(0)}
+                                </td>
+                            </tr>
+                        </isif>
+                        <tr>
+                            <td>${Resource.msg('page.reconcile.countreport.reconciled', 'avatax_constant', null)}</td>
+                            <td id="reconciled">${Resource.msg('page.reconcile.countreport.reconciled.value', 'avatax_constant', null)}</td>
+                        </tr>
+                    </table>
+                </isif>
+            </div>
+        </div>
+
+        <div id="data-table">
+            <isif condition="${pdict.orders != null}">
+                <iscomment> Order Data Table </iscomment>
+                <table id="av-data-table" border="0" width="100%" class="orders-table">
+                    <isset name="orders" value="${pdict.orders}" scope="page" />
+
+                     <iscomment> data table head </iscomment>
+                    <thead>
+                        <tr>
+                            <th class="table_header order-check-header">
+                                <input name="select_all" value="1" type="checkbox">
+                            </th>
+                            <th class="table_header">${Resource.msg('page.reconcile.table_header.ordernumber', 'avatax_constant', null)}</th>
+                            <th class="table_header e s">${Resource.msg('page.reconcile.table_header.orderdate', 'avatax_constant', null)}</th>
+                            <th class="table_header e s">${Resource.msg('page.reconcile.table_header.b2ctotalamount', 'avatax_constant', null)}</th>
+                            <th class="table_header e s">${Resource.msg('page.reconcile.table_header.b2ctotaltax', 'avatax_constant', null)}</th>
+                            <th class="table_header e s">${Resource.msg('page.reconcile.table_header.orderstatus', 'avatax_constant', null)}</th>
+                            <th class="table_header e s">${Resource.msg('page.reconcile.table_header.avataxtotalamount', 'avatax_constant', null)}</th>
+                            <th class="table_header e s">${Resource.msg('page.reconcile.table_header.avataxtotaltax', 'avatax_constant', null)}</th>
+                            <th class="table_header e s table-header-orange">${Resource.msg('page.reconcile.table_header.reoncilestatus', 'avatax_constant', null)}</th>
+
+                            <isif condition="${pdict.isBevAlcEnabled == true}">
+                                <th class="table_header e s table-header-orange">${Resource.msg('page.reconcile.table_header.verificationstatus', 'avatax_constant', null)}</th>
+                            </isif>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <iscomment> data table body </iscomment>
+                        <isloop items="${orders}" var="order">
+                            <tr class="order-data-row" data-orderno="${order.orderNo}"
+                                data-reconstatus="${order.reconciliationStatus}" data-verifystatus="${order.verificationStatus}">
+                                <td class="w e s td-order-check"></td>
+                                <td class="w e s td-order-number">${order.orderNo}</td>
+                                <td class="e s td-order-date">${(order.orderDate)}</td>
+                                <td class="e s td-order-amount">
+                                    <isprint value="${order.orderTotalAmt}" />
+                                </td>
+                                <td class="e s td-order-tax">
+                                    <isprint value="${order.orderTax}" />
+                                </td>
+                                <td class="e s td-order-status">${order.orderStatus}</td>
+
+                                <td class="e s td-av-order-amount">
+                                    ${dw.util.StringUtils.formatMoney(dw.value.Money(order.avTotalAmt, order.avCurrencyCode))}</td>
+                                <td class="e s td-av-order-tax">
+                                    ${dw.util.StringUtils.formatMoney(dw.value.Money(order.avTotalTax, order.avCurrencyCode))}</td>
+
+                                <iscomment> Reconciled Status </iscomment>
+                                <td class="e s td-reconcile-status" data-status="${order.reconciliationStatus}">
+                                    <span id="recon-status-text">${order.reconciliationStatus}</span>
+                                    <span id="ok-img">
+                                        <img src="${URLUtils.staticURL('/images/ok.png')}"
+                                            alt="Success">
+                                    </span>
+                                    <span id="err-img">
+                                        <img src="${URLUtils.staticURL('/images/alert.png')}"
+                                            alt="Error">
+                                    </span>
+                                </td>
+
+                                <iscomment> Verification Status </iscomment>
+                                <isif condition="${pdict.isBevAlcEnabled == true}">
+                                    <td class="e s td-verify-status" data-status="${order.verificationStatus}">
+                                        <span id="verify-status-text">${order.verificationStatus}</span>
+                                        <span id="ok-img">
+                                            <img src="${URLUtils.staticURL('/images/ok.png')}"
+                                                alt="Success">
+                                        </span>
+                                        <span id="err-img">
+                                            <img src="${URLUtils.staticURL('/images/alert.png')}"
+                                                alt="Error">
+                                        </span>
+                                    </td>
+                                </isif>
+                            </tr>
+                        </isloop>
+                    </tbody>
+                </table>
+
+                <iscomment> Message block, if no Orders </iscomment>
+                <iselse>
+                    <isif condition="${!(empty(session.privacy.fromdate) || empty(session.privacy.todate))}">
+                        <p class="message-no-orders">${Resource.msg('page.reconcile.noordersfound', 'avatax_constant', null)}</p>
+                    </isif>
+                </iselse>
+            </isif>
+
+            <iscomment> Buttons </iscomment>
+
+            <iscomment> Reconcile Button </iscomment>
+            <input id='submit-btn' class="button" type="submit" name="Reconcile" value="Reconcile"
+                data-method="${URLUtils.https('AvataxBM-Reconcile').toString()}"
+                data-savetoav=${pdict.siteInfo.saveTransactionsToAvatax}
+                data-committoav=${pdict.siteInfo.commitTransactionsToAvatax}
+                data-siteinfo="${URLUtils.https('AvataxBM-GetSiteInfoAJAX').toString()}" />
+
+            <iscomment> Bev Alc Actions </iscomment>
+            <isif condition="${pdict.isBevAlcEnabled == true && pdict.countReport != null}">
+
+                <iscomment> For Non Compliant Orders </iscomment>
+                <isif condition="${ Number.parseInt(pdict.countReport.nonCompliantCount) > 0 }">
+
+                    <iscomment> Reverify Button </iscomment>
+                    <input id='reverify-btn' class="button" type="submit" name="Reverify" value="Reverify"
+                        data-method="${URLUtils.https('AvataxBM-Reverify').toString()}"
+                        data-savetoav=${pdict.siteInfo.saveTransactionsToAvatax}
+                        data-committoav=${pdict.siteInfo.commitTransactionsToAvatax}
+                        data-labelnoncomp="${Resource.msg('label.bevalc.transaction.non_compliant', 'avatax_constant', null)}"
+                        data-labelcomp="${Resource.msg('label.bevalc.transaction.compliant', 'avatax_constant', null)}"
+                        data-siteinfo="${URLUtils.https('AvataxBM-GetSiteInfoAJAX').toString()}" />
+
+                    <iscomment> Override Button </iscomment>
+                    <input id='override-btn' class="button" type="submit" name="Override" value="Override"
+                        data-method="${URLUtils.https('AvataxBM-Reverify').toString()}"
+                        data-savetoav=${pdict.siteInfo.saveTransactionsToAvatax}
+                        data-committoav=${pdict.siteInfo.commitTransactionsToAvatax}
+                        data-siteinfo="${URLUtils.https('AvataxBM-GetSiteInfoAJAX').toString()}" />
+                </isif>
+
+                <iscomment> For Non Compliant && Cancelled-Compliant Orders </iscomment>
+                <isif condition="${ Number.parseInt(pdict.countReport.nonCompliantCount) > 0 || Number.parseInt(pdict.countReport.cancelledCompliantCount) > 0 }">
+                    <iscomment>  Cancel Button </iscomment>
+                    <input id='cancel-btn' class="button" type="submit" name="Cancel" value="Cancel"
+                        data-method="${URLUtils.https('AvataxBM-Cancel').toString()}"
+                        data-savetoav=${pdict.siteInfo.saveTransactionsToAvatax}
+                        data-committoav=${pdict.siteInfo.commitTransactionsToAvatax}
+                        data-labelnoncomp="${Resource.msg('label.bevalc.transaction.non_compliant', 'avatax_constant', null)}"
+                        data-labelcnclldcomp="${Resource.msg('label.bevalc.transaction.cnclld_compliant', 'avatax_constant', null)}"
+                        data-siteinfo="${URLUtils.https('AvataxBM-GetSiteInfoAJAX').toString()}" />
+                </isif>
+            </isif>
+        </div>
+    </div>
+
+    <div id="no-save-selected-dialog" title="Save transactions to AvaTax disabled">
+        <p>${Resource.msg('page.reconcile.message.nosaveselected', 'avatax_constant', null)}</p>
+    </div>
+
+    <div id="no-orders-selected-dialog" title="No orders selected">
+        <p>${Resource.msg('page.reconcile.message.noorderselected', 'avatax_constant', null)}</p>
+    </div>
+
+    <div id="reconcile-dialog-confirm" title="AvaTax confirmation">
+        <p>
+            <span></span>
+            ${Resource.msg('page.reconcile.message.reconcileconfirm_first', 'avatax_constant', null)}
+            <isif condition="${pdict.siteInfo.commitTransactionsToAvatax == 'Yes'}">
+                ${Resource.msg('page.reconcile.message.reconcileconfirm_second', 'avatax_constant', null)} <i>${Resource.msg('page.reconcile.message.reconcileconfirm_committed', 'avatax_constant', null)}</i>.
+            </isif>
+            ${Resource.msg('page.reconcile.message.reconcileconfirm_third', 'avatax_constant', null)}
+        </p>
+    </div>
+
+    <div id="display-all-orders-dialog" title="Fetch orders">
+        <p>
+            <span></span>
+            ${Resource.msg('page.reconcile.message.displayallorders', 'avatax_constant', null)}
+        </p>
+    </div>
+
+    <div id="no-orders-verify-selected-dialog" title="No orders selected">
+        <p>${Resource.msg('page.reconcile.message.noordersverifyselected', 'avatax_constant', null)}</p>
+    </div>
+
+    <div id="verify-dialog-confirm" title="AvaTax confirmation">
+    </div>
+
+    <div class="modal">
+        <iscomment> Place at bottom of page </iscomment>
+    </div>
+</isdecorate>
+
+<script src="${URLUtils.staticURL('/js/jquery-ui.min.js')}"></script>
+<script src="${URLUtils.staticURL('/DataTables/datatables.min.js')}"></script>
+<script src="${URLUtils.staticURL('/DataTables/datatables.buttons.min.js')}"></script>
+<script src="${URLUtils.staticURL('/js/avataxui.js')}"></script>

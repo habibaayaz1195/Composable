@@ -1,0 +1,76 @@
+{
+    "product-id": {
+        "parameters": [
+            {
+                "name": "AlcoholContent",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "ContainerSize",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "NetVolume",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "PackSize",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name":"IsAlcoholSample",
+                "value":""
+            },
+            {
+                "name":"IsForeignAlcohol",
+                "value":""
+            },
+            {
+                "name":"Brand",
+                "value":""
+            }
+        ],
+        "taxCode": ""
+    },
+    "product-id-2": {
+        "parameters": [
+            {
+                "name": "AlcoholContent",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "ContainerSize",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "NetVolume",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "PackSize",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name":"IsAlcoholSample",
+                "value":""
+            },
+            {
+                "name":"IsForeignAlcohol",
+                "value":""
+            },
+            {
+                "name":"Brand",
+                "value":""
+            }
+        ],
+        "taxCode": ""
+    }
+}

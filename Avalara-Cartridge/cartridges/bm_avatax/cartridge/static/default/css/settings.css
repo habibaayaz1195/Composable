@@ -1,0 +1,182 @@
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+.main-pane li {
+    list-style-type: circle;
+}
+
+.input-label {
+    cursor: help;
+}
+
+select {
+    padding: 5px !important;
+    font-size: 0.9em !important;
+}
+
+input {
+    padding: 5px;
+    min-width: 400px;
+    font-size: 0.9em !important;
+}
+
+td.td-order-number {
+    font-weight: bold;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .8) url(${loaderimgurl}) 50% 50% no-repeat;
+}
+
+#tabs {
+    font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
+    width: 60%;
+}
+
+.main-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#dw-gridcolumn-61 {
+    width: 9%;
+}
+
+#dw-gridcolumn-59 {
+    width: 2%;
+}
+
+.main-table td,
+.main-table th {
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.main-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.main-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #666;
+    color: white;
+}
+
+tr.section-background {
+    background: #ddd;
+}
+
+tr.action-row {
+    background-color: #ffffff;
+}
+
+tr.action-row > td {
+    text-align: right;
+}
+
+td.section-inner-text {
+    text-align: left;
+    color: #666;
+}
+
+p.section-inner-text-header {
+    font-weight: bold;
+    font-size: 1.05em;
+}
+
+.select-usecustomcustomercode {
+    margin-bottom: 10px;
+    min-width: 400px;
+}
+
+span.taxationpolicy-info {
+    color: #868686;
+    font-size: smaller;
+    font-style: italic;
+}
+
+span.taxationpolicy-gross-warning {
+    color: Red;
+    margin-bottom: 10px;
+}
+
+a.validate-address-btn > div{
+    height:100%;
+    width:100%
+}
+
+p.msg {
+    float: left;
+}
+
+button.button {
+    padding: 4px 30px 4px 30px !important;
+}
+
+button.submit-btn, button.test-con-btn {
+    margin-right: 10px;
+}
+
+.test-services-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.test-services-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.test-services-table td,
+.test-services-table th {
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.ui-tooltip {
+    font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
+    border-radius: 1px;
+    font-size: 0.9rem;
+}
+
+p.message {
+    float: right;
+    margin: 2px 0 0em 0;
+}
+
+p.transaction-msg {
+    text-align: center;
+    margin: 2px 0 0em 0;
+}
+
+#response-json {
+    width: 400px;
+    height: 100px;
+    overflow: scroll;
+    resize: none;
+    font-family: consolas, menlo, monospace;
+}
+
+#dummy-div {
+    display: none;
+}
+
+
+

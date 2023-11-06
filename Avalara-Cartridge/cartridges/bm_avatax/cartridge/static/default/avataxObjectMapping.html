@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>AvaTax Object Mapping</title>
+    <link rel="stylesheet" href="css/avataxObjectMapping.css" />
+  </head>
+  <body>
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <img src="icons/circle-info-solid-min.png" alt="Information" />
+      <p>
+        NOTE - A refresh sync may be required to display the latest field
+        mappings that have been configured. Check with your IT or Development
+        team to ensure the sync instructions available in supporting
+        documentation have been followed.<br>Last updated on Jun 06, 2023.
+      </p>
+    </div>
+
+    <!-- Transaction Mapping -->
+    <h1>Order Tax Calculation Field Mappings</h1>
+    <div class="grid-table">
+      <div class="grid-table-row">
+        <div class="grid-table-cell">#</div>
+        <div class="grid-table-cell">B2C Commerce Object Data Type</div>
+        <div class="grid-table-cell">B2C Commerce Field</div>
+        <div class="grid-table-cell">AvaTax Field</div>
+        <div class="grid-table-cell">Description</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">1.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Basket > UUID</div>
+        <div class="grid-table-cell">code</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              After you place an order, the variable code gets assigned with the
+              Order Number, and the docType gets assigned with the SalesInvoice.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">2.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Settings > Company Code</div>
+        <div class="grid-table-cell">companyCode</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>Specify the code of the company.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">3.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Current date</div>
+        <div class="grid-table-cell">date</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>Retrieved using JavaScript.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">4.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Basket > Shipment > Email</div>
+        <div class="grid-table-cell">customerCode</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>It sends the Account Id or Name as a Customer Code.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">5.</div>
+        <div class="grid-table-cell">dw.order.orderAddress</div>
+        <div class="grid-table-cell">Basket > Shipment > shippingAddress</div>
+        <div class="grid-table-cell">addresses.shipTo</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>Retrieved from the Storefront shipping page.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">6.</div>
+        <div class="grid-table-cell">dw.order.orderAddress</div>
+        <div class="grid-table-cell">Settings > shipFrom values</div>
+        <div class="grid-table-cell">addresses.shipFrom</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              AvaTax for Salesforce B2C Commerce provides an AvaTax
+              Configuration page where a user can enter the Origin Address.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">7.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Shipment > Line Item > UUID</div>
+        <div class="grid-table-cell">line.number</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>Represents line item in a transaction.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">8.</div>
+        <div class="grid-table-cell">Number</div>
+        <div class="grid-table-cell">Line Item > Quantity</div>
+        <div class="grid-table-cell">line.quantity</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>Quantity of items in this line.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">9.</div>
+        <div class="grid-table-cell">dw.value.Money</div>
+        <div class="grid-table-cell">Line Item > Price</div>
+        <div class="grid-table-cell">line.amount</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>AvaTax retrieves the value from the Basket object.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">10.</div>
+        <div class="grid-table-cell">dw.order.orderAddress</div>
+        <div class="grid-table-cell">Settings > shipFrom values</div>
+        <div class="grid-table-cell">line.addresses.shipFrom</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The shipFrom address picked from the AvaTax Configuration page.
+            </li>
+            <li>
+              The administrator(s) can also make customized shipFrom address for
+              specific products in JSON file located in
+              "cartridges\int_avatax_svcclient\cartridge\scripts\lineLevelAddress.json"
+            </li>
+            <li>
+              The shipFrom address will be fetched during tax calculation and
+              identified using unique Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">11.</div>
+        <div class="grid-table-cell">dw.order.orderAddress</div>
+        <div class="grid-table-cell">Basket > Shipment > shippingAddress</div>
+        <div class="grid-table-cell">line.addresses.shipTo</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The shipTo address is filled by the end user on the Storefront.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">12.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          Line Item > Tax class ID OR Setting > defaultShippingMethodTaxCode OR
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">line.taxCode</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>Tax Code - System or Custom Tax Code.</li>
+            <li>
+              For Beverages and alcohol products, specific Tax Code can be
+              assigned for distinct products in JSON file:
+              “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json"
+              . The Tax Code will be fetched during tax calculation and
+              identified using unique Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">13.</div>
+        <div class="grid-table-cell">dworder.TaxMgr.taxationPolicy</div>
+        <div class="grid-table-cell">Site settings > Taxation policy</div>
+        <div class="grid-table-cell">line.taxIncluded</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              It is a taxation policy of the current site. i.e. net/ gross
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">14.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Line Item > ID</div>
+        <div class="grid-table-cell">line.itemCode</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>The Line Item ID is used as ItemCode.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">15.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">Line Item > Product > Description</div>
+        <div class="grid-table-cell">line.description</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              AvaTax for Salesforce B2C Commerce passes the Product Description
+              as a line description to the AvaTax for Tax Calculation.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">16.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">customer.profile.custom.taxID</div>
+        <div class="grid-table-cell">businessIdentificationNo</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Enter the VAT Business Identification Number of the customer/
+              administrator(s).
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">17.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_svcclient\cartridge\scripts\lineLevelAddress.json
+        </div>
+        <div class="grid-table-cell">merchantSellerIdentifier</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign merchantSellerIdentifier for
+              specific products in JSON file located in
+              "cartridges\int_avatax_svcclient\cartridge\scripts\lineLevelAddress.json"
+            </li>
+            <li>
+              The merchantSellerIdentifier will be fetched during tax
+              calculation and identified using unique Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">18.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.AlcoholContent</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Alcohol percentage by volume,
+sent as a number for beverage
+and alcohol products in JSON
+file located in
+“\cartridges\int_avatax_svcclient
+\cartridge\scripts\avaBevAlcCon
+f.json”, identified using unique
+Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">19.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.ContainerSize
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign
+Container Size for beverage
+and alcohol products in JSON
+file located in
+“\cartridges\int_avatax_svcclient
+\cartridge\scripts\avaBevAlcCon
+f.json”, identified using unique
+Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">20.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.NetVolume
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The volume of only the item, substance, or product in question,
+               exclusive of packaging, container, or other ancillary materials for 
+               beverage and alcohol products in JSON file located in 
+               “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcCon f.json”, 
+identified using unique Product ID.
+
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">21.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.PackSize
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The number of taxable items in a package 
+              for beverage and alcohol products in JSON file 
+              located in 
+              “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcCon f.json”,
+               identified using unique Product ID.
+
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">22.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.IsAlcoholSample
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Used to indicate whether a beverage alcohol product is a
+               sample product in JSON file located in 
+               “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json,
+                identified using unique Product ID.
+
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">23.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.IsForeignAlcohol
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Used to indicate whether a beverage alcohol product 
+              is a foreign beverage alcohol product in JSON file located in 
+              “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json, 
+              identified using unique Product ID.
+
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">24.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">parameters.Brand
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Brand name associated with the product being sold, 
+              identified using unique Product ID in JSON file located in 
+              “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json”
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-table-row">
+        <div class="grid-table-cell">25.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">taxCode
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign taxCode for beverage and alcohol 
+              products in JSON file located in
+             “\cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json”,
+              it will be fetched during tax calculation and identified using 
+              unique Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">26.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          \cartridges\int_avatax_svcclient\cartridge\scripts\avaBevAlcConf.json
+        </div>
+        <div class="grid-table-cell">RecipientDOB
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The date of birth (DOB) associated with the "Ship To" recipient.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">27.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">AlcoholRouteType
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The sales channel for a beverage alcohol transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">28.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">PurchaserDOB
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The date of birth (DOB) associated with the "Bill To” recipient. 
+              Must be formatted as YYYY-MM-DD.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">29.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">TrackingNumber
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              A text string to indicate the tracking number of transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">30.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">IsDirectAlcoholImport
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              To indicate whether a beverage alcohol product is a direct import product.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">31.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">PurchaserName
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Represents the first and last name of purchaser associated with the transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">32.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">ShipDate
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The day merchandise associated with an order was shipped. 
+              Must be formatted as YYYY-MM-DD.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">33.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">SalesLocation
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Distinguishes orders that were placed onsite at a business location vs. offsite.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">34.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">PurchaserStreetAddress
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Street address of the purchaser associated with the transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">35.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">PurchaserToCity
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              City of the purchaser associated with the transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">36.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">PurchaserToState
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              State of the purchaser associated with the transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">37.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">PurchaserToZip
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              ZIP of the purchaser associated with the transaction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">38.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">CarrierCode
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Carrier code of shipment.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">39.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">FullfillmentHouseCode
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Name of fulfilment house. Required for wine products.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">40.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">Varietal
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              For wine products only, to indicate what varietal the product is classified.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">41.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">basket.currencyCode</div>
+        <div class="grid-table-cell">currencyCode</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>It displays the currency information.</li>
+            <li>For example: Currency Code: USD</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced VAT Field Mapping -->
+    <h1>Enhanced VAT Field Mappings</h1>
+    <div class="grid-table">
+      <div class="grid-table-row">
+        <div class="grid-table-cell">#</div>
+        <div class="grid-table-cell">B2C Commerce Object Data Type</div>
+        <div class="grid-table-cell">B2C Commerce Field</div>
+        <div class="grid-table-cell">AvaTax Field</div>
+        <div class="grid-table-cell">Description</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">1.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">customer.profile.custom.taxID</div>
+        <div class="grid-table-cell">businessIdentificationNo</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Enter the VAT Business Identification Number of the customer/
+              administrator(s).
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="grid-table-row">
+        <div class="grid-table-cell">2.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          customer.profile.custom.ATisSellerImporterOfRecord
+        </div>
+        <div class="grid-table-cell">isSellerImporterOfRecord
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Boolean value extracted from custom field using AvaTax metadata from Salesforce customer Profile page.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">3.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">pointOfOrderOrigin
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Billing address of the order during checkout.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">4.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_svcclient\ cartridge\scripts\lineLevelAddress.json
+        </div>
+        <div class="grid-table-cell">transport
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign transport for specific
+               products in JSON file located in "cartridges\int_avatax_svcclient\cartridge\scripts\lineLevelAddress.json".
+            </li>
+            <li>
+              The transport field will be fetched during tax calculation and identified using unique Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">5.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">cartridges\int_avatax_svcclient\cartridge\scripts\avaMerchantConf.json</div>
+        <div class="grid-table-cell">MerchantEstablishmentCountry</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign MerchantEstablishmentCountry for
+              specific products in JSON file located in "cartridges\int_avatax_svcclient\cartridge\scripts\avaMerchantConf.json".
+            </li>
+            <li>
+              The MerchantEstablishmentCountry will be fetched during tax calculation and identified using unique merchantSellerIdentifier.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">6.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_svcclient\cartridge\scripts\avaMerchantConf.json
+        </div>
+        <div class="grid-table-cell">MerchantName</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign MerchantName for specific products in JSON file
+               located in "cartridges\int_avatax_svcclient\cartridge\scripts\avaMerchantConf.json".
+            </li>
+            <li>
+              The MerchantName will be fetched during tax calculation and identified using unique merchantSellerIdentifier.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">7.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_svcclient\cartridge\scripts\lineLevelAddress.json
+        </div>
+        <div class="grid-table-cell">merchantSellerIdentifier</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign merchantSellerIdentifier for
+              specific products in JSON file located in
+              "cartridges\int_avatax_svcclient\cartridge\scripts\lineLevelAddress.json"
+            </li>
+            <li>
+              The merchantSellerIdentifier will be fetched during tax
+              calculation and identified using unique Product ID.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">8.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_svcclient\cartridge\scripts\avaMerchantConf.json
+        </div>
+        <div class="grid-table-cell">MerchantVatId</div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              The administrator(s) can assign MerchantVatId for specific products in JSON file
+               located in "cartridges\int_avatax_svcclient\cartridge\scripts\avaMerchantConf.json".
+            </li>
+            <li>
+              The MerchantVatId will be fetched during tax calculation and identified using unique merchantSellerIdentifier.
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="grid-table-row">
+        <div class="grid-table-cell">9.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">marketplaceLiabilityType
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              To identify who remits taxes on a transaction in a marketplace. 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">10.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">
+          cartridges\int_avatax_sfra\cartridge\scripts\helpers\avatax\calculateTaxHelper.js
+        </div>
+        <div class="grid-table-cell">originationSite
+        </div>
+        <div class="grid-table-cell">
+          <ul>
+            <li>
+              Name of the marketplace from where a transaction originated. 
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Mapping -->
+    <h1>Address Field Mappings</h1>
+    <div class="grid-table address-grid">
+      <div class="grid-table-row">
+        <div class="grid-table-cell">#</div>
+        <div class="grid-table-cell">B2C Commerce Object Data Type</div>
+        <div class="grid-table-cell">B2C Commerce Field</div>
+        <div class="grid-table-cell">AvaTax Field</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">1.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">address1</div>
+        <div class="grid-table-cell">line1</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">2.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">address2</div>
+        <div class="grid-table-cell">line2</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">3.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">address3</div>
+        <div class="grid-table-cell">line3</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">4.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">city</div>
+        <div class="grid-table-cell">city</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">5.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">stateCode</div>
+        <div class="grid-table-cell">region</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">6.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">countryCode / country</div>
+        <div class="grid-table-cell">country</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">7.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">postalCode</div>
+        <div class="grid-table-cell">postalCode</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">8.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">latitude</div>
+        <div class="grid-table-cell">latitude</div>
+      </div>
+      <div class="grid-table-row">
+        <div class="grid-table-cell">9.</div>
+        <div class="grid-table-cell">String</div>
+        <div class="grid-table-cell">longitude</div>
+        <div class="grid-table-cell">longitude</div>
+      </div>
+    </div>
+  </body>
+</html>
